@@ -11,7 +11,7 @@ A bzBond server plugin must define two things:
 
 1. An asynchronous function that will receive a fastify instance, as well the
    plugins options
-1. An [fastify plugin options
+1. Optional: A [fastify plugin options
    object](https://www.fastify.io/docs/latest/Reference/Plugins/#plugin-options).
 
 The function is in charge of defining all the custom routes you want your
