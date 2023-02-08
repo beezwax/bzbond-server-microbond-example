@@ -30,5 +30,30 @@ module.exports = { plugin: myPlugin };
 Note that we skipped the `options` as it's optional. We then define a GET
 route at `/hello-world`, and simply return the string `"Hello, world!"`.
 
+If you want to use a schema, you can do it as such:
+
+```javascript
+const mySchema = {
+  body: {
+    type: "object",
+    required: ["foo"],
+    properties: {
+      foo: { type: "string", minLength: 1 },
+      bar: { type: "array" },
+    },
+  },
+};
+
+async function myPlugin(fastify) {
+  fastify.get("/hello-world", { schema: mySchema }, (req, res) => {
+    const { foo, bar } = req.body;
+    // ... do something with foo and bar
+    return "Hello, world!";
+  });
+}
+
+module.exports = { plugin: myPlugin };
+```
+
 For the full documentation on how to use fastify, see [the official
 documentation](https://www.fastify.io/docs/latest/Guides/Getting-Started/#your-first-plugin).
