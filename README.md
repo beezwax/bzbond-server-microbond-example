@@ -14,7 +14,7 @@ On macOs/Linux use the following command to install this Microbond:
 
 On Windows Server use the following command to install this Microbond:
 
-`"C:\Program Files\bzBond-server\bin\install-microbond.ps1" bzmb-hello-world https://github.com/beezwax/bzbond-server-microbond-example`
+`powershell -File "C:\Program Files\bzBond-server\bin\install-microbond.ps1" bzmb-hello-world https://github.com/beezwax/bzbond-server-microbond-example`
 
 # Microbond architecture
 
