@@ -1,36 +1,47 @@
-# bzBond Server Microbond Example
+# Introduction
 
-This is a minimal bzBond server microbond example. You can browse the code at
-`index.js` to see how it works. Install it with:
+This is a minimal [bzBond-server Microbond](https://github.com/beezwax/bzBond/tree/main/packages/bzBond-server#microbonds) example. Use it to learn about and get started creating Microbonds.
 
-    $ ./var/www/bzbond-server/bin/install-microbond.sh beezwax/bzbond-server-microbond-example
+# Installation
 
-# Microbond Architecture
+## Installation on macOS/Linux
+
+On macOs/Linux use the following command to install this Microbond:
+
+`/var/www/bzbond-server/bin/install-microbond.sh bzmb-hello-world https://github.com/beezwax/bzbond-server-microbond-example`
+
+## Installation on Windows Server
+
+On Windows Server use the following command to install this Microbond:
+
+`"C:\Program Files\bzBond-server\bin\install-microbond.ps1" bzmb-hello-world https://github.com/beezwax/bzbond-server-microbond-example`
+
+# Microbond architecture
+
+## Basic Microbond architecture
 
 A microbond must define two things:
 
-1. An asynchronous function that will receive a fastify instance, as well the
-   plugins options
-1. Optional: A [fastify plugin options
-   object](https://www.fastify.io/docs/latest/Reference/Plugins/#plugin-options).
+1. An asynchronous function that will receive a fastify instance and fastify plugins options
+1. Optional: A [fastify plugin options object](https://www.fastify.io/docs/latest/Reference/Plugins/#plugin-options).
 
-The function is in charge of defining all the custom routes you want your
-bzBond server to handle. Below is a bare bones example:
+The function is in charge of defining all the custom routes the Microbond should handle. Below is a bare bones example:
 
 ```javascript
-async function myMicrobond(fastify) {
-  fastify.get("/hello-world", (req, res) => {
+async function bzmbHelloWorld(fastify) {
+  fastify.get("/bzmb-hello-world", (req, res) => {
     return "Hello, world!";
   });
 }
 
-module.exports = { microbond: myMicrobond };
+module.exports = { microbond: bzmbHelloWorld };
 ```
 
-Note that we skipped the `options` as it's optional. We then define a GET
-route at `/hello-world`, and simply return the string `"Hello, world!"`.
+Note that this example skipped the `options` property as it's optional. The body of the function defines a GET route at `/bzmb-hello-world`, that simply returns the string `"Hello, world!"`.
 
-If you want to use a schema, you can do it as such:
+## Microbond architecture: Adding schema
+
+To define schema and ensure only requests with a valid body are executed, define a schema in [JSON schema](https://json-schema.org/) format and include it in your route function.
 
 ```javascript
 const mySchema = {
@@ -44,16 +55,18 @@ const mySchema = {
   },
 };
 
-async function myMicrobond(fastify) {
-  fastify.get("/hello-world", { schema: mySchema }, (req, res) => {
+async function bzmbHelloWorld(fastify) {
+  fastify.post("/bzmb-hello-world", { schema: mySchema }, (req, res) => {
     const { foo, bar } = req.body;
     // ... do something with foo and bar
     return "Hello, world!";
   });
 }
 
-module.exports = { microbond: myMicrobond };
+module.exports = { microbond: bzmbHelloWorld };
 ```
+Note that we are defining a schema for a request body so we change our fastify route to `POST` as `GET` requests don't have bodies. 
 
-For the full documentation on how to use fastify, see [the official
-documentation](https://www.fastify.io/docs/latest/Guides/Getting-Started/#your-first-plugin).
+## Microbonds are fastify plugins
+
+bzBond-server runs on [fastify](https://www.fastify.io/), and Microbonds are fastify plugins. Full documentation on creating fastify plugins can be found [here](https://www.fastify.io/docs/latest/Guides/Getting-Started/#your-first-plugin).
