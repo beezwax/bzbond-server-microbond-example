@@ -1,4 +1,6 @@
-async function helloWorld(fastify, options) {
+const helloWorld = require("./helloWorld.js");
+
+async function bzmbHelloworld(fastify, options) {
   fastify.get(
     "/bzmb-hello-world",
     async (req, res) => {
@@ -16,4 +18,4 @@ async function helloWorld(fastify, options) {
   )
 }
 
-module.exports = { microbond: helloWorld };
+module.exports = { microbond: bzmbHelloworld };
